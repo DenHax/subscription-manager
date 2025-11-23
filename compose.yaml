@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:17.7
+    container_name: "${APP_NAME}-storage"
+    restart: unless-stopped
+    healthcheck:
+      test: pg_isready -U $POSTGRES_USER -d $POSTGRES_DB
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - "sub-storage:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      sub-postgres-net:
+    env_file:
+      - ./.env
+
+  migrate:
+    image: "migrate/migrate"
+    container_name: "${APP_NAME}-migrate"
+    restart: "on-failure:3"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_URL: "${DOCKER_POSTGRES_URL}"
+    command:
+      - "-path=/migrations"
+      - "-database=${DOCKER_POSTGRES_URL}"
+      - "up"
+    volumes:
+      - "${MIGRATIONS_DIR}:/migrations"
+    networks:
+      sub-postgres-net:
+    env_file:
+      - ./.env
+
+  subscriptions-go:
+    image: "${APP_REPOSITORY:-denhax}/${APP_NAME:-sub}-service:v0.1"
+    container_name: "srv-${APP_NAME:-sub}-1"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "${APP_PORT}:${DOCKER_APP_PORT}"
+    environment:
+      - "POSTGRES_URL=${DOCKER_POSTGRES_URL}"
+      - "GIN_MODE=debug"
+    restart: on-failure:3
+    networks:
+      sub-postgres-net:
+      sub-net:
+    env_file:
+      - ./.env
+
+networks:
+  sub-postgres-net:
+  sub-net:
+
+volumes:
+  sub-storage:
