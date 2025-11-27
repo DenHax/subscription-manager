@@ -43,7 +43,7 @@ services:
       - ./.env
 
   subscriptions-go:
-    image: "${APP_REPOSITORY:-denhax}/${APP_NAME:-sub}-service:v0.1"
+    image: "${APP_REPOSITORY:-denhax}/${APP_NAME:-sub}-service:v1.0"
     container_name: "srv-${APP_NAME:-sub}-1"
     depends_on:
       postgres:

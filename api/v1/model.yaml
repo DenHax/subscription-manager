@@ -1,0 +1,4 @@
+package: models
+generate:
+  models: true
+output: internal/domain/models/models.gen.go

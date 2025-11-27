@@ -1,0 +1,6 @@
+package: server
+generate:
+  gin-server: true
+  models: true
+  embedded-spec: true
+output: internal/http/server/codegen.gen.go

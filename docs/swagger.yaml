@@ -1,0 +1,25 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: API for Subscription aggregation for Effective Mobile
+  title: API for Subscription aggregation
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Check application health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Health check
+      tags:
+      - health
+swagger: "2.0"

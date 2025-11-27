@@ -1,0 +1,8 @@
+package: server
+generate:
+  echo-server: false # или gin-server если поддерживается
+  gin-server: true
+  server: true
+  models: true
+  embedded-spec: true
+output: internal/http/server/server_gen.go

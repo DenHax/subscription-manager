@@ -37,18 +37,20 @@
             pkgs.gat
             pkgs.fzf
 
+            pkgs.disko
+
             pkgs.go
+            pkgs.golangci-lint
+            pkgs.air
             pkgs.gnumake
             pkgs.docker-compose
             pkgs.git
-            pkgs.postgresql
-            pkgs.golangci-lint
-            pkgs.air
-            pkgs.go-swag
 
-            pkgs.disko
+            pkgs.postgresql
 
             pkgs.oapi-codegen
+            pkgs.go-swag
+            pkgs.go-swagger
           ];
         };
       }

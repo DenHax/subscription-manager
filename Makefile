@@ -5,18 +5,18 @@ all: native docker
 .PHONY: native
 native:
 	@echo "Сборка нативной версии..."
-	@. ./scripts/build-native_reivew.sh
+	@. ./scripts/build-native_subscriptions.sh
 
 .PHONY: docker
 docker:
 	@echo "Сборка Docker образа..."
-	@. ./scripts/build-docker_review.sh
+	@. ./scripts/build-docker_subscriptions.sh
 
 .PHONY: clean
 clean:
 	@echo "Очистка..."
-	@rm -rf build/bin/review-*
-	@docker images -q review:* 2>/dev/null | xargs -r docker rmi -f
+	@rm -rf build/package/subscriptions-*
+	@docker images -q subscriptions-:* 2>/dev/null | xargs -r docker rmi -f
 
 .PHONY: version
 version:
